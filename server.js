@@ -1,5 +1,6 @@
 //Packages needed for the application
 const express = require('express');
+const routes = require('./routes'); //Including all the routes 
 const Sequelize = require('sequelize');
 
 const sequelize = require('./config/connection');
@@ -11,7 +12,7 @@ const PORT = process.env.PORT || 3001;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// app.use(apiRoutes);
+app.use(routes);
 
 //Connection to the database
 sequelize.sync().then(() => {
