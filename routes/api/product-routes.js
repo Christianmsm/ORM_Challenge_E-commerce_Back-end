@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
   // be sure to include its associated Category and Tag data
   try {
   const allProductData = await Product.findAll({
-    include: [{ model: Product }] 
+    include: [{ model: Product },{ model: Tag }] 
   });
   res.status(200).json(allProductData);
 }
@@ -23,13 +23,13 @@ router.get('/:id', async (req, res) => {
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
   try {
-    const singleProduct = await Product.findByPk(req.params.id, {
-      include: [{ model: Category }],
-      include: [{ model: Tag }],
+    const getProductById = await Product.findByPk(req.params.id, {
+      include: [{ model: Category },{ model: Tag }]
     });
 
-    if(!singleProduct) {
+    if(!getProductById) {
       res.status(404).json({message: `Oh no, can't find this product!`});
+      return;
     }
   } 
   catch (err) {
@@ -111,8 +111,20 @@ router.put('/:id', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   // delete one product by its `id` value
+try {
+  const deleteProductById = await Product.destroy({
+    where: { id: req.params.id }
+  });
+  if (!deleteProductById) {
+    res.status(404).json({ message: 'Something went wrong!' });
+    return;
+  }
+  res.status(200).json(deleteProductById);
+} catch (err) {
+  res.status(500),json(err);
+}
 });
 
 module.exports = router;
