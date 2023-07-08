@@ -35,6 +35,7 @@ Currently there are no contributions being taken.
 ## Resources
 Video submission:
 
+
 ## GitHub
 Christianmsm: https://github.com/Christianmsm
 ## Email
